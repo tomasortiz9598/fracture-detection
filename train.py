@@ -17,7 +17,7 @@ from matplotlib import pyplot as plt
 
 IMG_WIDTH = 200
 IMG_HEIGHT = 200
-img_folder = r'./dataset'
+img_folder = r'./modified_ds'
 
 
 def create_dataset(img_folder):
@@ -57,7 +57,9 @@ def generate_data():
     print(y_test)
 
     # Matriz de confusion y metricas
+    print("Metricas: ")
     print(metrics.classification_report(y_test, prediction))
+    print("Matriz de confusion: ")
     print(metrics.confusion_matrix(y_test, prediction))
 
     # Loss

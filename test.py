@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 from matplotlib import pyplot as plt
 from neural_network import NeuralNetwork
+import random
 
 def _sample(array, n_samples):
     ""
@@ -96,3 +97,63 @@ def train(img_data, dummies):
 
         W2 = W2 - learning_rate * W2_update
         W1 = W1 - learning_rate * W1_update
+
+
+
+
+
+def fit(X_train, X_test, y_train, y_test, mlp):
+    N_TRAIN_SAMPLES = X_train.shape[0]
+    N_EPOCHS = 3000
+    N_BATCH = 128
+    N_CLASSES = np.unique(y_train)
+
+    scores_train = []
+    scores_test = []
+
+    # EPOCH
+    epoch = 0
+    while epoch < N_EPOCHS:
+        print('epoch: ', epoch)
+        # SHUFFLING
+        random_perm = np.random.permutation(X_train.shape[0])
+        mini_batch_index = 0
+        while True:
+            # MINI-BATCH
+            indices = random_perm[mini_batch_index:mini_batch_index + N_BATCH]
+            mlp.partial_fit(X_train[indices], y_train[indices], classes=N_CLASSES)
+            mini_batch_index += N_BATCH
+
+            if mini_batch_index >= N_TRAIN_SAMPLES:
+                break
+
+        # SCORE TRAIN
+        scores_train.append(mlp.score(X_train, y_train))
+
+        # SCORE TEST
+        scores_test.append(mlp.score(X_test, y_test))
+
+        epoch += 1
+
+    """ Plot """
+    fig, ax = plt.subplots(2, sharex=True, sharey=True)
+    ax[0].plot(scores_train)
+    ax[0].set_title('Train')
+    ax[1].plot(scores_test)
+    ax[1].set_title('Test')
+    fig.suptitle("Accuracy over epochs", fontsize=14)
+    plt.show()
+
+
+
+def show_random_images():
+    plt.figure(figsize=(20, 20))
+    folder = r'./dataset/compuestas'
+    for i in range(5):
+        file = random.choice(os.listdir(folder))
+        image_path = os.path.join(folder, file)
+        img = mpimg.imread(image_path)
+        ax = plt.subplot(1, 5, i + 1)
+        ax.title.set_text(file)
+        plt.imshow(img)
+        plt.show()

@@ -5,7 +5,6 @@ import cv2
 from sklearn import metrics
 from sklearn.neural_network import MLPClassifier
 from matplotlib import pyplot as plt
-import seaborn as sns
 
 '''
 1 Open the image file. The format of the file can be JPEG, PNG, BMP, etc.
@@ -50,15 +49,22 @@ def generate_data():
 
     X_train, X_test, y_train, y_test = train_test_split(img_data, target_val, test_size=0.25, stratify=target_val)
 
-    mlp = MLPClassifier(solver='lbfgs', alpha=1e-5, hidden_layer_sizes=(50, 2), random_state=1)
-    print(mlp)
+    mlp = MLPClassifier(solver='sgd', alpha=1e-5, hidden_layer_sizes=(50, 2), random_state=1)
     mlp.fit(X_train, y_train)
     prediction = mlp.predict(X_test)
+
+    # Esperado vs obtenido
     print(prediction)
     print(y_test)
 
+    # Matriz de confusion y metricas
     print(metrics.classification_report(y_test, prediction))
     print(metrics.confusion_matrix(y_test, prediction))
+
+    # Loss
+    loss_values = mlp.loss_curve_
+    plt.plot(loss_values)
+    plt.show()
 
 
 

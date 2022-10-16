@@ -15,7 +15,6 @@ from matplotlib import pyplot as plt
 '''
 
 
-
 IMG_WIDTH = 200
 IMG_HEIGHT = 200
 img_folder = r'./dataset'

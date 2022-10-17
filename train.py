@@ -17,7 +17,7 @@ from matplotlib import pyplot as plt
 
 IMG_WIDTH = 200
 IMG_HEIGHT = 200
-img_folder = r'./modified_ds'
+img_folder = r'./dataset'
 
 
 def create_dataset(img_folder):
